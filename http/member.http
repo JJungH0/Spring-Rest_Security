@@ -6,13 +6,27 @@ GET localhost:8080/me
 GET localhost:8080/me
 Accept: application/xml
 
+
+### 멤버조회
+GET localhost:8080/members
+
+### 멤버조회
+GET localhost:8080/members/shin
+
+### 멤버조회
+GET localhost:8080/members/man
+
+
 ### 멤버생성
 POST localhost:8080/members
 Content-Type: application/json
 Accept-Language: en
 
 {
-  "name" : "백종원",
-  "age" : 50,
-  "class" : null
+  "id" : "shin",
+  "name" : "신건영",
+  "age" : 20,
+  "class" : "A",
+  "role" : "member"
+
 }
