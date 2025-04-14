@@ -13,6 +13,7 @@ GET localhost:8080/members
 ### 멤버조회
 GET localhost:8080/members/shin
 
+
 ### 멤버조회
 GET localhost:8080/members/man
 
@@ -28,5 +29,4 @@ Accept-Language: en
   "age" : 20,
   "class" : "A",
   "role" : "member"
-
 }
