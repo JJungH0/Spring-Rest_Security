@@ -24,6 +24,7 @@ public class LoginController {
     public String loginPage() {
         return "login";
     }
+
     @PostMapping
     public ModelAndView processLogin(MemberLoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response)  {
         Member memberResponse = memberService.login(loginRequest);
@@ -31,4 +32,6 @@ public class LoginController {
         mav.addObject("loginName", memberResponse.getName());
         return mav;
     }
+
+
 }

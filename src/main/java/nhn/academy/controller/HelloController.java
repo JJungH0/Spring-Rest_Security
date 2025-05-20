@@ -6,10 +6,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HelloController {
-//    @ResponseBody
+    //    @ResponseBody
     @GetMapping("/hello")
-    public String hello(){
+    public String hello() {
         return "hello";
     }
-
+//
+//    @GetMapping("/")
+//    public String index() {
+//        return "home";
+//    }
 }

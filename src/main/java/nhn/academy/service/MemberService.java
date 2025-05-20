@@ -1,8 +1,10 @@
 package nhn.academy.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nhn.academy.InvalidPasswordException;
 import nhn.academy.model.Member;
 import nhn.academy.model.MemberCreateCommand;
+import nhn.academy.model.MemberLoginRequest;
 import nhn.academy.model.exception.MemberAlreadyExistsException;
 import nhn.academy.model.exception.MemberNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +80,15 @@ public class MemberService {
 //        redisTemplate.opsForHash().put(HASH_NAME, memberId, updateMember);
 //        return updateMember;
         return null;
+    }
+
+    public Member login(MemberLoginRequest loginRequest) {
+        Member member = getMember(loginRequest.getId());
+        System.out.println(member);
+//        if (!member.getPassword().equals(loginRequest.getPassword())) {
+//            throw new InvalidPasswordException("Incorerect Password");
+//        }
+        return member;
     }
 
 
