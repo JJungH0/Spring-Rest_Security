@@ -20,16 +20,6 @@ public class MemberEntity {
     public MemberEntity() {
     }
 
-//    public Member(String id, String name, Integer age, ClassType clazz, Role role, String password) {
-//        this.id = id;
-//        this.name = name;
-//        this.age = age;
-//        this.clazz = clazz;
-//        this.role = role;
-//        this.password = getPassword();
-//
-//    }
-
     public MemberEntity(MemberCreateCommand command, String encodePassword) {
         this.id = command.getId();
         this.name = command.getName();
@@ -39,24 +29,5 @@ public class MemberEntity {
         this.password = encodePassword;
     }
 
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public Integer getAge() {
-//        return age;
-//    }
-//
-//    public ClassType getClazz() {
-//        return clazz;
-//    }
-//
-//    public Role getRole() {
-//        return role;
-//    }
-//
-//    public String getId() {
-//        return id;
-//    }
 
 }

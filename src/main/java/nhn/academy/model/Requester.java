@@ -1,7 +1,10 @@
 package nhn.academy.model;
 
+import lombok.Getter;
+
 import java.util.Locale;
 
+@Getter
 public class Requester {
     private String ip;
     private Locale lang;
@@ -10,11 +13,4 @@ public class Requester {
         this.lang = lang;
     }
 
-    public String getIp() {
-        return ip;
-    }
-
-    public Locale getLang() {
-        return lang;
-    }
 }

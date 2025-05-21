@@ -1,5 +1,7 @@
 package nhn.academy.config;
 
+import nhn.academy.handler.CustomAuthenticationFailureHandler;
+import nhn.academy.handler.CustomAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -38,7 +40,7 @@ public class SecurityConfig {
 //    }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler, CustomAuthenticationFailureHandler customAuthenticationFailureHandler) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin((formLogin) ->
@@ -46,8 +48,14 @@ public class SecurityConfig {
                         .usernameParameter("id")
                         .passwordParameter("pwd")
                         .loginProcessingUrl("/auth/login/process")
+                        .successHandler(customAuthenticationSuccessHandler)
+                        .failureHandler(customAuthenticationFailureHandler)
 
         );
+
+        http
+                .exceptionHandling()
+                .accessDeniedPage("/403");
 
         http.authorizeHttpRequests(authorizeRequests ->
                 // "/admin/** -> URL 요청은 ADMIN 권한만 접근이 가능.
