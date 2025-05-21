@@ -44,6 +44,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/auth/login").setViewName("/auth/login");
+        registry.addViewController("/auth/login/process").setViewName("/auth/login/process");
         registry.addViewController("/admin/**").setViewName("admin"); // admin 페이지 매핑
         registry.addViewController("/private-project/**").setViewName("private-project");
         registry.addViewController("/public-project/**").setViewName("public-project");

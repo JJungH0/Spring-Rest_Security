@@ -16,34 +16,43 @@ public class MemberController {
 
     @GetMapping("/name")
     public String getName(){
-        return "신건영";
+        return "최정환";
     }
 
     @GetMapping("/me")
-    public Member getMe(){
-        return new Member("mandoo","신건영", 20, ClassType.A, Role.ADMIN);
+    public MemberEntity getMe(){
+        return new MemberEntity();
     }
 
+    // 멤버 등록
     @PostMapping("/members")
     public ResponseEntity addMember(@RequestBody MemberCreateCommand memberCreateCommand,
                                     @Auth Requester requester){
         memberService.createMember(memberCreateCommand);
-        System.out.println(memberCreateCommand);
         return ResponseEntity.ok().build();
     }
 
+    // 멤버 전체 조회
     @GetMapping("/members")
-    public List<Member> getMembers(){
+    public List<MemberEntity> getMembers(){
         return memberService.getMembers();
     }
 
+    // 멤버 단건 조회
     @GetMapping("/members/{memberId}")
-    public Member getMembers(@PathVariable String memberId){
+    public MemberEntity getMembers(@PathVariable String memberId){
         return memberService.getMember(memberId);
     }
 
+    // 수정
     @PutMapping("/members/{memberId}")
-    public Member updateMember(@PathVariable String memberId){
-        return memberService.updateMember(memberId);
+    public MemberEntity updateMember(@PathVariable String memberId, @RequestBody MemberCreateCommand mcc) {
+        return memberService.updateMember(memberId,mcc);
+    }
+    // 삭제
+    @DeleteMapping("/members/{memberId}")
+    public ResponseEntity deleteMember(@PathVariable String memberId){
+        memberService.removeMember(memberId);
+        return ResponseEntity.ok().build();
     }
 }

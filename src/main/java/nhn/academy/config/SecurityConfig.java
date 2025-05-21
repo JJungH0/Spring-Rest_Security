@@ -2,6 +2,7 @@ package nhn.academy.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -38,6 +39,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        http.csrf(AbstractHttpConfigurer::disable);
+        http.formLogin((formLogin) ->
+                formLogin.loginPage("/auth/login")
+                        .usernameParameter("id")
+                        .passwordParameter("pwd")
+                        .loginProcessingUrl("/auth/login/process")
+
+        );
+
         http.authorizeHttpRequests(authorizeRequests ->
                 // "/admin/** -> URL 요청은 ADMIN 권한만 접근이 가능.
                 authorizeRequests.requestMatchers("/admin/**").hasRole("ADMIN")
@@ -45,13 +56,25 @@ public class SecurityConfig {
                         .requestMatchers("/private-project/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MEMBER")
                         // 해당 URL에는 모두 접근허용
                         .requestMatchers("/public-project/**").permitAll()
+
+                        // 해당 URL에는 모두 접근허용
+                        .requestMatchers("/members").permitAll()
+
+                        // 단일 멤버 조회 허용
+                        .requestMatchers("/members/**").permitAll()
+
+                        // 실습추가
+                        .requestMatchers("/auth/login").permitAll()
+
+                        // 회원가입 기능접속
+                        .requestMatchers(HttpMethod.POST, "/members").permitAll()
                         // 그 외 요청은 로그인(인증) 되어야만 접근 가능
                         .anyRequest().authenticated()
         );
         // csrf diable
         http.csrf(AbstractHttpConfigurer::disable);
         // UsernamePasswordAuthenticationFilter가 활성화
-        http.formLogin(Customizer.withDefaults());
+//        http.formLogin(Customizer.withDefaults());
         return http.build();
     }
 

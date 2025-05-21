@@ -11,11 +11,7 @@ Accept: application/xml
 GET localhost:8080/members
 
 ### 멤버조회
-GET localhost:8080/members/shin
-
-
-### 멤버조회
-GET localhost:8080/members/man
+GET localhost:8080/members/choi
 
 
 ### 멤버생성
@@ -24,9 +20,10 @@ Content-Type: application/json
 Accept-Language: en
 
 {
-  "id" : "choi",
+  "id" : "member",
   "name" : "최정환",
   "age" : 27,
   "class" : "A",
-  "role" : "member"
+  "role" : "MEMBER",
+  "password": "member"
 }
