@@ -1,9 +1,13 @@
 package nhn.academy.config;
 
+import nhn.academy.filter.UserAuthenticationFilter;
 import nhn.academy.handler.CustomAuthenticationFailureHandler;
 import nhn.academy.handler.CustomAuthenticationSuccessHandler;
+import nhn.academy.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
@@ -18,9 +22,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
+
+    @Autowired
+    private UserAuthenticationFilter userAuthenticationFilter;
 
 
 //    @Bean
@@ -40,7 +48,11 @@ public class SecurityConfig {
 //    }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler, CustomAuthenticationFailureHandler customAuthenticationFailureHandler) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler,
+                                                   CustomAuthenticationFailureHandler customAuthenticationFailureHandler,
+                                                   RedisTemplate<String, Object> redisTemplate,       // **추가!**
+                                                   MemberService memberService) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin((formLogin) ->
@@ -79,6 +91,9 @@ public class SecurityConfig {
                         // 그 외 요청은 로그인(인증) 되어야만 접근 가능
                         .anyRequest().authenticated()
         );
+
+        http.addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         // csrf diable
         http.csrf(AbstractHttpConfigurer::disable);
         // UsernamePasswordAuthenticationFilter가 활성화
@@ -99,9 +114,5 @@ public class SecurityConfig {
         return RoleHierarchyImpl.fromHierarchy("ROLE_ADMIN > ROLE_MEMBER"); //// ROLE_ADMIN은 ROLE_MEMBER보다 상위
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
 }
